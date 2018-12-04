@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import styled from 'styled-components';
 import logo from './logo.svg';
 import './App.css';
 
@@ -7,6 +8,7 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
+          <StyledTitle>mino</StyledTitle>
           <img src={logo} className="App-logo" alt="logo" />
           <p>
             Edit <code>src/App.js</code> and save to reload.
@@ -26,3 +28,8 @@ class App extends Component {
 }
 
 export default App;
+
+const StyledTitle = styled.span`
+  font-size: 46px;
+  color: white;
+`
