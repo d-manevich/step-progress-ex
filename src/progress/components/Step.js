@@ -1,11 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 
 const Step = ({ title, isActive, disabled, onClick }) => (
   <StepBtn
     isActive={isActive}
-    onClick={onClick}
+    onClick={disabled ? null : onClick}
     disabled={disabled}
   >
     <StepTitle>{ title }</StepTitle>
@@ -28,6 +28,21 @@ Step.defaultProps = {
 
 export default Step
 
+const pulseKeyframe = keyframes`
+  0% {
+    transform: scale(1);
+  }
+  33% {
+    transform: scale(1.2);
+  }
+  33% {
+    transform: scale(0.9);
+  }
+  100% {
+    transform: scale(1);
+  }
+`
+
 const StepBtn = styled.button`
   position: relative;
   cursor: pointer;
@@ -36,8 +51,9 @@ const StepBtn = styled.button`
   width: 10px;
   background-color: ${props => props.isActive ? '#5110df' : '#dbdbdb'};
   color: ${props => props.isActive ? '#5110df' : '#dbdbdb'};
+  transition: background-color 400ms ease-out;
 
-  &:disabled {
+  &[disabled] {
     cursor: not-allowed;
   }
 
@@ -63,6 +79,13 @@ const StepBtn = styled.button`
     height: 20px;
     background-color: white;
   }
+
+  &:not([disabled]):hover {
+    &:before,
+    &:after {
+      animation: ${pulseKeyframe} 700ms ease-out infinite;
+    }
+  }
 `
 
 const StepTitle = styled.div`
@@ -72,4 +95,5 @@ const StepTitle = styled.div`
   transform: translateX(-50%);
   font-weight: bold;
   font-size: 22px;
+  transition: color 400ms ease-out;
 `

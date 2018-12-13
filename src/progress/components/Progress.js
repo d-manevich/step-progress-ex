@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 import Step from './Step'
 
 function stepsProp (props, propName) {
@@ -39,6 +39,12 @@ Progress.propTypes = {
 
 export default Progress
 
+const progressKeyframe = keyframes`
+  0% {
+    width: 0;
+  }
+`
+
 const ProgressBar = styled.div`
   position: relative;
   display: flex;
@@ -56,5 +62,7 @@ const ProgressBar = styled.div`
     left: 0;
     width: ${props => props.progress}%;
     background-color: #5110df;
+    animation: ${progressKeyframe} 400ms ease-out;
+    transition: width 400ms ease-out;
   }
 `
