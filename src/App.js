@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
-import Progress from './progress'
+import ProgressContainer from './progress'
 
 class App extends Component {
   render () {
     return (
       <Wrapper>
         <Container>
-          <Progress />
+          <ProgressContainer />
         </Container>
       </Wrapper>
     )
