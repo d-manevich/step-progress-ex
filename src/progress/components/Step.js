@@ -31,6 +31,7 @@ export default Step
 const StepBtn = styled.button`
   position: relative;
   cursor: pointer;
+  outline: none;
   height: 10px;
   width: 10px;
   background-color: ${props => props.isActive ? '#5110df' : '#dbdbdb'};

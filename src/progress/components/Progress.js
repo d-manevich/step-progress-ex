@@ -3,8 +3,18 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import Step from './Step'
 
-const Progress = ({ progress, steps, onStepClick }) => {
+function stepsProp (props, propName) {
+  if (!Array.isArray(props[propName])) {
+    return new Error(`${propName} should be an array`)
+  }
+  if (props[propName].length < 2 || props[propName].length > 5) {
+    return new Error(`Minimum number of ${propName} two and a maximum five`)
+  }
+}
+
+const Progress = ({ progress, steps, onProgressChange }) => {
   const currentStepIndex = Math.floor((steps.length - 1) * progress / 100)
+  const progressOnStep = 100 / (steps.length - 1)
 
   return (
     <ProgressBar progress={progress}>
@@ -12,7 +22,7 @@ const Progress = ({ progress, steps, onStepClick }) => {
         <Step
           title={step}
           isActive={index <= currentStepIndex}
-          onClick={() => onStepClick(index)}
+          onClick={() => onProgressChange(progressOnStep * index)}
           disabled={index + 1 < currentStepIndex || index - 1 > currentStepIndex}
           key={index}
         />
@@ -22,15 +32,9 @@ const Progress = ({ progress, steps, onStepClick }) => {
 }
 
 Progress.propTypes = {
-  progress: PropTypes.number,
-  steps: PropTypes.arrayOf(PropTypes.string),
-  onStepClick: PropTypes.func
-}
-
-Progress.defaultProps = {
-  progress: 50,
-  steps: ['Design', 'Launch'], // add count check
-  onStepClick: () => {}
+  progress: PropTypes.number.isRequired,
+  onProgressChange: PropTypes.func.isRequired,
+  steps: stepsProp
 }
 
 export default Progress
