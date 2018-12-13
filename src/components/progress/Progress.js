@@ -1,28 +1,36 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
+import Step from './Step'
 
-const checkStep = (currentStepIndex, progress, stepLength) =>
-  currentStepIndex * 100 / (stepLength - 1) <= progress
+const Progress = ({ progress, steps, onStepClick }) => {
+  const currentStepIndex = Math.floor((steps.length - 1) * progress / 100)
 
-const Progress = ({ progress, steps }) => (
-  <ProgressBar progress={progress}>
-    {steps.map((step, index) =>
-      <Step isActive={checkStep(index, progress, steps.length)} key={index}>
-        <StepTitle>{ step }</StepTitle>
-      </Step>
-    )}
-  </ProgressBar>
-)
+  return (
+    <ProgressBar progress={progress}>
+      {steps.map((step, index) =>
+        <Step
+          title={step}
+          isActive={index <= currentStepIndex}
+          onClick={() => onStepClick(index)}
+          disabled={index + 1 < currentStepIndex || index - 1 > currentStepIndex}
+          key={index}
+        />
+      )}
+    </ProgressBar>
+  )
+}
 
 Progress.propTypes = {
   progress: PropTypes.number,
-  steps: PropTypes.arrayOf(PropTypes.string)
+  steps: PropTypes.arrayOf(PropTypes.string),
+  onStepClick: PropTypes.func
 }
 
 Progress.defaultProps = {
   progress: 50,
-  steps: ['Design', 'Launch'] // add count check
+  steps: ['Design', 'Launch'], // add count check
+  onStepClick: () => {}
 }
 
 export default Progress
@@ -45,44 +53,4 @@ const ProgressBar = styled.div`
     width: ${props => props.progress}%;
     background-color: #5110df;
   }
-`
-
-const Step = styled.div`
-  position: relative;
-  height: 10px;
-  width: 10px;
-  background-color: ${props => props.isActive ? '#5110df' : '#dbdbdb'};
-  color: ${props => props.isActive ? '#5110df' : '#dbdbdb'};
-
-  &:before,
-  &:after {
-    content: '';
-    position: absolute;
-    border-radius: 50%;
-  }
-
-  &:before {
-    top: -15px;
-    left: -15px;
-    width: 40px;
-    height: 40px;
-    background-color: inherit;
-  }
-
-  &:after {
-    top: -5px;
-    left: -5px;
-    width: 20px;
-    height: 20px;
-    background-color: white;
-  }
-`
-
-const StepTitle = styled.div`
-  position: absolute;
-  left: 50%;
-  top: -70px;
-  transform: translateX(-50%);
-  font-weight: bold;
-  font-size: 22px;
 `
